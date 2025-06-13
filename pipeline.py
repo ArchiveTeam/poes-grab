@@ -77,7 +77,7 @@ if not WGET_AT:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20250612.01'
+VERSION = '20250613.01'
 USER_AGENT = 'Mozilla/5.0 (X11; Linux i686; rv:124.0) Gecko/20100101 Firefox/124.0'
 TRACKER_ID = 'poes'
 TRACKER_HOST = 'legacy-api.arpa.li'
@@ -281,6 +281,16 @@ class WgetArgs(object):
             item_type, item_value = item_name.split(':', 1)
             if item_type == 'ncei-data-file':
                 url = 'https://www.ncei.noaa.gov/data/' + item_value
+                wget_args.extend(['--warc-header', 'file-url: '+url])
+                wget_args.append(url)
+            elif item_type == 'ncei-data-file-aws':
+                name, rest = item_value.split('/', 1)
+                if name == 'avhrr-polar-pathfinder':
+                    test, rest = rest.split('/', 1)
+                    assert test == 'access'
+                    url = 'https://noaa-cdr-polar-pathfinder-fcdr-pds.s3.amazonaws.com/data/'+rest
+                else:
+                    raise Exception('Bad item dataset name {}.'.format(name))
                 wget_args.extend(['--warc-header', 'file-url: '+url])
                 wget_args.append(url)
             else:

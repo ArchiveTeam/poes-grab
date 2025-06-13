@@ -51,6 +51,7 @@ find_item = function(url)
   local type_ = nil
   for pattern, name in pairs({
     ["^https?://www%.ncei%.noaa%.gov/data/(.+)$"]="ncei-data-file",
+    ["^https?://(noaa%-cdr%-polar%-pathfinder%-fcdr%-pds%.s3%.amazonaws%.com/data/.+)$"]="ncei-data-file-aws"
   }) do
     value = string.match(url, pattern)
     type_ = name
@@ -72,6 +73,12 @@ set_item = function(url)
     local newcontext = {}
     new_item_type = found["type"]
     new_item_value = found["value"]
+    if new_item_type == "ncei-data-file-aws" then
+      local a, b = string.match(new_item_value, "^(noaa%-cdr%-polar%-pathfinder%-fcdr%-pds%.s3%.amazonaws%.com/data/)(.+)$")
+      if a and b then
+        new_item_value = "avhrr-polar-pathfinder/access/" .. b
+      end
+    end
     new_item_name = new_item_type .. ":" .. new_item_value
     if new_item_name ~= item_name then
       ids = {}
@@ -113,9 +120,14 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
     end
   end
 
-  local path = string.match(url, "/data/avhrr%-hirs%-reflectance%-and%-cloud%-properties%-patmosx/access/(.+[^/])$")
-  if path then
-    check("https://noaa-cdr-patmosx-radiances-and-clouds-pds.s3.amazonaws.com/data/" .. path)
+  for k, v in pairs({
+    ["/data/avhrr%-hirs%-reflectance%-and%-cloud%-properties%-patmosx/access/(.+[^/])$"]="https://noaa-cdr-patmosx-radiances-and-clouds-pds.s3.amazonaws.com/data/",
+    ["/data/avhrr%-polar%-pathfinder/access/(.+[^/])$"]="https://noaa-cdr-polar-pathfinder-fcdr-pds.s3.amazonaws.com/data/",
+  }) do
+    local path = string.match(url, k)
+    if path then
+      check(v .. path)
+    end
   end
  
   return urls
