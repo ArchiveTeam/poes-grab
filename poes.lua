@@ -216,6 +216,7 @@ end
 
 wget.callbacks.finish = function(start_time, end_time, wall_time, numurls, total_downloaded_bytes, total_download_time)
   if item_type == "ncei-data-file"
+    and not string.match(item_value, "^avhrr%-reflectance%-cloud%-properties%-patmos%-extended/")
     and total_downloaded_bytes > 1 * (1024 ^ 2) then
     local warc_file = io.open(item_dir .. "/" .. warc_file_base .. ".warc.gz", "r")
     local warc_size = warc_file:seek("end")
