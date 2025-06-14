@@ -123,6 +123,14 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
   for k, v in pairs({
     ["/data/avhrr%-hirs%-reflectance%-and%-cloud%-properties%-patmosx/access/(.+[^/])$"]="https://noaa-cdr-patmosx-radiances-and-clouds-pds.s3.amazonaws.com/data/",
     ["/data/avhrr%-polar%-pathfinder/access/(.+[^/])$"]="https://noaa-cdr-polar-pathfinder-fcdr-pds.s3.amazonaws.com/data/",
+    ["/data/amsu%-a%-brightness%-temperature/access/(.+[^/])$"]="https://noaa-cdr-microwave-temp-sounder-brit-temp-pds.s3.amazonaws.com/data/",
+    ["/data/amsu%-a%-brightness%-temperature%-noaa/access/(.+[^/])$"]="https://noaa-cdr-microwave-brit-temp-pds.s3.amazonaws.com/data/",
+    ["/data/amsu%-b%-mhs%-brightness%-temperature/access/(.+[^/])$"]="https://noaa-cdr-microwave-humidity-sounder-brit-temp-pds.s3.amazonaws.com/data/",
+    ["/data/avhrr%-polar%-pathfinder%-extended/access/(.+[^/])$"]="https://noaa-cdr-polar-pathfinder-extended-pds.s3.amazonaws.com/data/",
+    ["/data/avhrr%-aerosol%-optical%-thickness/access/(.+[^/])$"]="https://noaa-cdr-aerosol-optical-thickness-pds.s3.amazonaws.com/data/",
+    ["/data/land%-normalized%-difference%-vegetation%-index/access/(.+[^/])$"]="https://noaa-cdr-ndvi-pds.s3.amazonaws.com/data/",
+    ["/data/land%-leaf%-area%-index%-and%-fapar/access/(.+[^/])$"]="https://noaa-cdr-leaf-area-index-fapar-pds.s3.amazonaws.com/data/",
+    ["/data/land%-surface%-reflectance/access/(.+[^/])$"]="https://noaa-cdr-surface-reflectance-polar-orbiter-pds.s3.amazonaws.com/data/",
   }) do
     local path = string.match(url, k)
     if path then
@@ -217,6 +225,7 @@ end
 wget.callbacks.finish = function(start_time, end_time, wall_time, numurls, total_downloaded_bytes, total_download_time)
   if item_type == "ncei-data-file"
     and not string.match(item_value, "^avhrr%-reflectance%-cloud%-properties%-patmos%-extended/")
+    and not string.match(item_value, "oceans/pathfinder/")
     and total_downloaded_bytes > 1 * (1024 ^ 2) then
     local warc_file = io.open(item_dir .. "/" .. warc_file_base .. ".warc.gz", "r")
     local warc_size = warc_file:seek("end")
