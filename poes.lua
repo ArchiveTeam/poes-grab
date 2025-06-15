@@ -131,6 +131,10 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
     ["/data/land%-normalized%-difference%-vegetation%-index/access/(.+[^/])$"]="https://noaa-cdr-ndvi-pds.s3.amazonaws.com/data/",
     ["/data/land%-leaf%-area%-index%-and%-fapar/access/(.+[^/])$"]="https://noaa-cdr-leaf-area-index-fapar-pds.s3.amazonaws.com/data/",
     ["/data/land%-surface%-reflectance/access/(.+[^/])$"]="https://noaa-cdr-surface-reflectance-polar-orbiter-pds.s3.amazonaws.com/data/",
+    ["/data/mean%-layer%-temperature%-ucar%-lower%-stratosphere/access/(.+[^/])$"]="https://noaa-cdr-mean-layer-temp-lower-strat-pds.s3.amazonaws.com/data/",
+    ["/data/mean%-layer%-temperature%-noaa/access/(.+[^/])$"]="https://noaa-cdr-mean-layer-temp-pds.s3.amazonaws.com/data/",
+    ["/data/mean%-layer%-temperature%-ucar%-upper%-trop%-lower%-strat/access/(.+[^/])$"]="https://noaa-cdr-mean-layer-temp-upper-trop-lower-strat-pds.s3.amazonaws.com/data/",
+    ["/data/hydrological%-properties/access/(.+[^/])$"]="https://noaa-cdr-hydrological-properties-pds.s3.amazonaws.com/data/",
   }) do
     local path = string.match(url, k)
     if path then
@@ -226,6 +230,7 @@ wget.callbacks.finish = function(start_time, end_time, wall_time, numurls, total
   if item_type == "ncei-data-file"
     and not string.match(item_value, "^avhrr%-reflectance%-cloud%-properties%-patmos%-extended/")
     and not string.match(item_value, "oceans/pathfinder/")
+    and not string.match(item_value, "^poes%-metop%-space%-environment%-monitor/")
     and total_downloaded_bytes > 1 * (1024 ^ 2) then
     local warc_file = io.open(item_dir .. "/" .. warc_file_base .. ".warc.gz", "r")
     local warc_size = warc_file:seek("end")
