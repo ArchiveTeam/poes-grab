@@ -1,6 +1,6 @@
 # poes-grab
 
-More information about the archiving project can be found on the ArchiveTeam wiki: [Polar Operational Environmental Satellites](https://wiki.archiveteam.org/index.php?title=Polar Operational Environmental Satellites)
+More information about the archiving project can be found on the ArchiveTeam wiki: [Polar Operational Environmental Satellites](https://wiki.archiveteam.org/index.php?title=Polar%20Operational%20Environmental%20Satellites)
 
 ## Setup instructions
 
